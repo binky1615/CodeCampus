@@ -9,30 +9,30 @@ const Dashboard = ({ courseData }) => {
   const [query, setQuery] = useState("");
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredCourses = () => {
-    if (!courseData || !Array.isArray(courseData)) return [];
+const filteredCourses = () => {
+  if (!courseData || !Array.isArray(courseData)) return [];
 
-    let filtered = [...courseData];
-    
+  let filtered = [...courseData];
 
-      if (activeTab === "beginner") {
-       filtered.courseData.filter((course) => course.level === "Beginner");
-    } else if (activeTab === "gemiddeld") {
-      filtered.courseData.filter((course) => course.level === "Gemiddeld");
-    } else if (activeTab === "gevorderd") {
-      filtered.courseData.filter((course) => course.level === "Gevorderd");
-    } else if (activeTab === "populair") {
-      filtered.sort((a, b) => b.views - a.views);
-    }
+  if (activeTab === "beginner") {
+    filtered = filtered.filter((course) => course.level === "Beginner");
+  } else if (activeTab === "gemiddeld") {
+    filtered = filtered.filter((course) => course.level === "Gemiddeld");
+  } else if (activeTab === "gevorderd") {
+    filtered = filtered.filter((course) => course.level === "Gevorderd");
+  } else if (activeTab === "populair") {
+    filtered.sort((a, b) => b.views - a.views);
+  }
 
-    if (searchTerm.trim() !== '') {
-      filtered = filtered.filter(course =>
+  if (searchTerm.trim() !== "") {
+    filtered = filtered.filter((course) =>
       course.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+    );
+  }
 
-    return filtered;
-  };
+  return filtered;
+};
+
 
   return (
     <section className="dashboard">
