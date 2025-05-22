@@ -55,20 +55,28 @@ const CourseCard = ({ course }) => {
               <img src={course.imageUrl} alt={course.title} className="modal-image" />
               <p>{course.description}</p>
               <dl className="modal-info">
-                <dd className="level">Niveau: {course.level}</dd>
-                <dd className="duration">Duur: {course.duration}</dd>
+                <dd>Niveau: {course.level}</dd>
+                <dd>Duur: {course.duration}</dd>
               </dl>
               <div className="modal-stats">
-                <span className="members">{course.members} leden</span>
-                <span className="views">{course.views} weergaven</span>
-                <span className="rating">⭐ {course.rating}</span>
+                <span>{course.members} leden</span>
+                <span>{course.views} weergaven</span>
+                <span>⭐ {course.rating}</span>
+              </div>
+              <div className="modal-categories">
+                <p>Categories:</p>
+                {
+                  course.categories.map((item) => (
+                    <span >{item}</span>
+                  ))
+                }
               </div>
               <div className="modal-buttons">
                 <a href={course.videoUrl} target="_blank" rel="noopener noreferrer" className="course-button">
                   <button className="course-button-a">Bekijk Video</button>
                 </a>
-                <button onClick={closeModal} className="course-button">
-                Sluiten
+                <button onClick={closeModal} className="closing-button">
+                X
                 </button>
               </div>
             </div>

@@ -207,8 +207,8 @@
 }
 
 .modal-image{
-  width: 75%;
-  height: 75%;
+  width: 80%;
+  height: 80%;
 }
 
 .modal-details{
@@ -225,5 +225,41 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: small;
 }
 
+.modal-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: small;
+}
+
+.modal-categories{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: small;
+  
+}
+
+.closing-button{
+  font-size: xx-large;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  top: 5rem;
+  right: 34%;
+}
