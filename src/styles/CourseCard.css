@@ -263,3 +263,10 @@
   top: 5rem;
   right: 34%;
 }
+
+.favorite-button{
+  font-size: xx-large;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
