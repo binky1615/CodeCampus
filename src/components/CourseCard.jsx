@@ -2,17 +2,24 @@ import "../styles/CourseCard.css";
 import { useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  const CourseCard = ({ course, favorites, toggleFavorite }) => {
+const CourseCard = ({ course, favorites, toggleFavorite, watched, toggleWatched }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const isFavorite = favorites?.some(fav => fav.id === course.id);
+  const isWatched = watched?.some(watch => watch.id === course.id);
+  
 
   const handleFavorite = () => {
     toggleFavorite(course);
     alert(`Je hebt ${course.title} ${isFavorite ? 'uit favorieten verwijderd' : 'als favoriet toegevoegd'}!`);
+  };
+
+  const handleWatched = () => {
+    toggleWatched(course);
+    alert(`Je hebt ${course.title} ${isWatched ? 'uit gekeken verwijderd' : 'als gekeken toegevoegd'}!`);
   };
 
 
@@ -33,6 +40,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
             onClick={handleFavorite}
           >
             {isFavorite ? '★' : '☆'}
+          </button>
+          <button
+            className="favorite-button"
+            onClick={handleWatched}
+          >
+            {isWatched ? '🚩' : '⚐'}
           </button>
           <img src={course.imageUrl} alt={course.title} />
         </figure>
@@ -101,4 +114,3 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 };
 
 export default CourseCard;
-

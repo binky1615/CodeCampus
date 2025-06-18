@@ -5,6 +5,8 @@ import CourseList from "./CourseList";
 import PopularCourses from "./PopularCourses";
 import Statistics from "./Statistics";
 import CourseCard from './CourseCard';
+// import { useNavigate } from 'react-router-dom'
+
 
 const Dashboard = ({ courseData }) => {
   const [activeTab, setActiveTab] = useState("all");
@@ -15,12 +17,27 @@ const Dashboard = ({ courseData }) => {
   const [showSorting, setShowSorting] = useState(false);
   const [sortOption, setSortOption] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [Wacthed, setWatched] = useState([]);
   
   const STORAGE_KEY = 'favorites';
+  const STORAGE =   "watched";
+  const STORAGE_TAG = "tags";
+  const STORAGE_SORT = "sortOption";
+
+  // const navigate = useNavigate();
+
+
 
     useEffect(() => {
     loadFavorites();
+    loadWatched();
+    loadTags();
+    loadSort();
   }, []);
+
+  useEffect(() => {
+  saveSort(sortOption);
+}, [sortOption]);
 
     const loadFavorites = async () => {
     const stored = await AsyncStorage.getItem(STORAGE_KEY);
@@ -29,8 +46,41 @@ const Dashboard = ({ courseData }) => {
     }
   };
 
+    const loadWatched = async () => {
+    const stored = await AsyncStorage.getItem(STORAGE);
+    if (stored) {
+      setWatched(JSON.parse(stored));
+    }
+  };
+
+  const loadTags = async () => {
+    const stored = await AsyncStorage.getItem(STORAGE_TAG);
+    if (stored) {
+      setSelectedTags(JSON.parse(stored));
+    }
+  };
+
+  const loadSort = async () => {
+    const stored = await AsyncStorage.getItem(STORAGE_SORT);
+    if (stored) {
+      setSortOption(stored);
+    }
+  };
+
   const saveFavorites = async (newFavs) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newFavs));
+  };
+
+  const saveWatched = async (newwatch) => {
+    await AsyncStorage.setItem(STORAGE, JSON.stringify(newwatch));
+  };
+
+  const saveTags = async (newTags) => {
+    await AsyncStorage.setItem(STORAGE_TAG, JSON.stringify(newTags));
+  };
+
+  const saveSort = async (option) => {
+    await AsyncStorage.setItem(STORAGE_SORT, option ?? "");
   };
 
   const toggleFavorite = async (course) => {
@@ -43,7 +93,15 @@ const Dashboard = ({ courseData }) => {
     await saveFavorites(updated);
   };
 
+  const toggleWatched = async (course) => {
+    const isWatch = Wacthed.some(w => w.id === course.id);
+    const updated = isWatch
+      ? Wacthed.filter(w => w.id !== course.id)
+      : [...Wacthed, course]; // Save full course
 
+    setWatched(updated);
+    await saveWatched(updated);
+  };
 
   const filteredCourses = () => {
     if (!courseData || !Array.isArray(courseData)) return [];
@@ -61,6 +119,10 @@ const Dashboard = ({ courseData }) => {
     } else if (activeTab === "favorite") {
       filtered = filtered.filter(course =>
         favorites.some(fav => fav.id === course.id)
+      );
+    } else if (activeTab === "watched") {
+      filtered = filtered.filter(course =>
+        Wacthed.some(watch => watch.id === course.id)
       );
     };
 
@@ -98,7 +160,6 @@ const Dashboard = ({ courseData }) => {
         });
       }
     }
-
     return filtered;
   };
 
@@ -107,15 +168,26 @@ const Dashboard = ({ courseData }) => {
   ];
 
   const handleTagClick = (tag) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
+    const updated = selectedTags.includes(tag)
+      ? selectedTags.filter((t) => t !== tag)
+      : [...selectedTags, tag];
+    
+    setSelectedTags(updated);
+    saveTags(updated);
   };
 
   return (
     <section className="dashboard">
+      {/* <header>
+        <button>
+          <img
+            className="profile-icon"
+            // src={profileIcon}
+            alt="Profiel"
+            onClick={() => navigate("/profile")}
+          />
+        </button>
+      </header> */}
       <header className="dashboard-header">
         <div className="search-bar">
           <input
@@ -171,6 +243,12 @@ const Dashboard = ({ courseData }) => {
             onClick={() => setActiveTab("favorite")}
           >
             Favorieten
+          </button>
+                    <button
+            className={activeTab === "watched" ? "active" : ""}
+            onClick={() => setActiveTab("watched")}
+          >
+            Bekeken
           </button>
           <button 
             className="tab-buttons"
@@ -235,6 +313,8 @@ const Dashboard = ({ courseData }) => {
               ? "Gevorderde Cursussen"
               : activeTab === "favorite"
               ? "Favoriete Cursussen"
+              : activeTab === "watched"
+              ? "Bekeken Cursussen"
               : "Meest Bekeken Cursussen"}
           </h2>
 
@@ -245,6 +325,8 @@ const Dashboard = ({ courseData }) => {
                 course={course}
                 favorites={favorites}
                 toggleFavorite={toggleFavorite}
+                watched={Wacthed}
+                toggleWatched={toggleWatched}
               />
             ))}
           </div>
@@ -261,9 +343,4 @@ const Dashboard = ({ courseData }) => {
 };
 
 export default Dashboard;
-
-
-
-
-
 
