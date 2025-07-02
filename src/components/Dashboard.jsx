@@ -5,7 +5,9 @@ import CourseList from "./CourseList";
 import PopularCourses from "./PopularCourses";
 import Statistics from "./Statistics";
 import CourseCard from './CourseCard';
+// import AppRoutes from '../Route';
 // import { useNavigate } from 'react-router-dom'
+
 
 
 const Dashboard = ({ courseData }) => {
@@ -182,7 +184,7 @@ const Dashboard = ({ courseData }) => {
         <button>
           <img
             className="profile-icon"
-            // src={profileIcon}
+            src={profileIcon}
             alt="Profiel"
             onClick={() => navigate("/profile")}
           />
